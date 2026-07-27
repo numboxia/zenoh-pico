@@ -1,0 +1,34 @@
+#
+# examples/nuttx/zenoh_sub/Kconfig
+#
+
+config EXAMPLES_ZENOH_SUB
+	tristate "zenoh-pico subscriber example"
+	default n
+	depends on NET_UDP
+	---help---
+		Build the zenoh-pico UDP subscriber as a NuttX builtin app.
+		Network must be up (virtio-net provides virtual Ethernet to A53 Linux).
+
+if EXAMPLES_ZENOH_SUB
+
+config EXAMPLES_ZENOH_PICO_DIR
+	string "Path to zenoh-pico source tree"
+	default "$(TOPDIR)/../zenoh-pico"
+	---help---
+		Absolute or CMake-relative path to the zenoh-pico repository root.
+		Only define once; shared between zenoh_pub and zenoh_sub.
+
+config EXAMPLES_ZENOH_SUB_PROGNAME
+	string "Program name"
+	default "zenoh_sub"
+
+config EXAMPLES_ZENOH_SUB_PRIORITY
+	int "Task priority"
+	default 100
+
+config EXAMPLES_ZENOH_SUB_STACKSIZE
+	int "Stack size (bytes)"
+	default 8192
+
+endif # EXAMPLES_ZENOH_SUB

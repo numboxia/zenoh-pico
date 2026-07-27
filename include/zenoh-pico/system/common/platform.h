@@ -48,6 +48,10 @@
 #define ZP_PLATFORM_SOCKET_LWIP 1
 #endif
 
+#if !defined(ZP_PLATFORM_SOCKET_POSIX) && defined(ZENOH_NUTTX)
+#define ZP_PLATFORM_SOCKET_POSIX 1
+#endif
+
 #if !defined(ZP_PLATFORM_SOCKET_ESP32) && (defined(ZENOH_ESPIDF) || defined(ZENOH_ARDUINO_ESP32))
 #define ZP_PLATFORM_SOCKET_ESP32 1
 #endif
@@ -95,6 +99,8 @@
 #include "zenoh-pico/system/platform/freertos/ti_am67a.h"
 #elif defined(ZENOH_TI_AM64X)
 #include "zenoh-pico/system/platform/freertos/ti_am64x.h"
+#elif defined(ZENOH_NUTTX)
+#include "zenoh-pico/system/platform/nuttx.h"
 #elif defined(ZENOH_RPI_PICO)
 #include "zenoh-pico/system/platform/rpi_pico.h"
 #elif defined(ZENOH_GENERIC)
