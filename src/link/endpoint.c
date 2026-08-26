@@ -31,6 +31,9 @@
 #if Z_FEATURE_LINK_UDP_UNICAST == 1 || Z_FEATURE_LINK_UDP_MULTICAST == 1
 #include "zenoh-pico/link/config/udp.h"
 #endif
+#if Z_FEATURE_LINK_QUIC == 1
+#include "zenoh-pico/link/config/quic.h"
+#endif
 #if Z_FEATURE_LINK_BLUETOOTH == 1
 #include "zenoh-pico/link/config/bt.h"
 #endif
@@ -409,6 +412,12 @@ z_result_t _z_endpoint_config_from_string(_z_str_intmap_t *strint, const _z_stri
             return _z_udp_config_from_strn(strint, p_start, cfg_size);
         }
 #endif
+#if Z_FEATURE_LINK_QUIC == 1
+        cmp_str = _z_string_alias_str(QUIC_SCHEMA);
+        if (_z_string_equals(proto, &cmp_str)) {
+            return _z_quic_config_from_strn(strint, p_start, cfg_size);
+        }
+#endif
 #if Z_FEATURE_LINK_BLUETOOTH == 1
         cmp_str = _z_string_alias_str(BT_SCHEMA);
         if (_z_string_equals(proto, &cmp_str)) {
@@ -456,6 +465,12 @@ size_t _z_endpoint_config_strlen(const _z_str_intmap_t *s, _z_string_t *proto) {
         return _z_udp_config_strlen(s);
     }
 #endif
+#if Z_FEATURE_LINK_QUIC == 1
+        cmp_str = _z_string_alias_str(QUIC_SCHEMA);
+        if (_z_string_equals(proto, &cmp_str)) {
+            return _z_quic_config_strlen(s);
+        }
+#endif
 #if Z_FEATURE_LINK_BLUETOOTH == 1
     cmp_str = _z_string_alias_str(BT_SCHEMA);
     if (_z_string_equals(proto, &cmp_str)) {
@@ -502,6 +517,12 @@ char *_z_endpoint_config_to_string(const _z_str_intmap_t *s, const _z_string_t *
     if (_z_string_equals(proto, &cmp_str)) {
         return _z_udp_config_to_str(s);
     }
+#endif
+#if Z_FEATURE_LINK_QUIC == 1
+        cmp_str = _z_string_alias_str(QUIC_SCHEMA);
+        if (_z_string_equals(proto, &cmp_str)) {
+            return _z_quic_config_str(s);
+        }
 #endif
 #if Z_FEATURE_LINK_BLUETOOTH == 1
     cmp_str = _z_string_alias_str(BT_SCHEMA);

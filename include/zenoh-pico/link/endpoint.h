@@ -29,6 +29,9 @@ extern "C" {
 #if Z_FEATURE_LINK_TCP == 1
 #define TCP_SCHEMA "tcp"
 #endif
+#if Z_FEATURE_LINK_QUIC == 1
+#define QUIC_SCHEMA "quic"
+#endif
 #if Z_FEATURE_LINK_UDP_UNICAST == 1 || Z_FEATURE_LINK_UDP_MULTICAST == 1
 #define UDP_SCHEMA "udp"
 #endif
