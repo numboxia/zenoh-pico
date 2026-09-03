@@ -331,6 +331,7 @@ set(Z_FEATURE_ENCODING_VALUES 1 CACHE STRING "Toggle encoding values")
 set(Z_FEATURE_MULTI_THREAD 1 CACHE STRING "Toggle multithread")
 
 set(Z_FEATURE_LINK_TCP 1 CACHE STRING "Toggle TCP links")
+set(Z_FEATURE_LINK_QUIC 1 CACHE STRING "Toggle QUIC links")
 set(Z_FEATURE_LINK_BLUETOOTH 0 CACHE STRING "Toggle Bluetooth links")
 set(Z_FEATURE_LINK_WS 0 CACHE STRING "Toggle WebSocket links")
 set(Z_FEATURE_LINK_SERIAL 0 CACHE STRING "Toggle Serial links")
@@ -473,7 +474,7 @@ if(PICO_SHARED)
 endif()
 
 # TLS support via Mbed TLS
-if(Z_FEATURE_LINK_TLS)
+if(Z_FEATURE_LINK_TLS OR Z_FEATURE_LINK_QUIC)
   find_package(PkgConfig REQUIRED)
 
   # Prefer Mbed TLS 3.x, fall back to 2.x
@@ -533,6 +534,16 @@ if(Z_FEATURE_LINK_TLS)
     target_link_directories(${Libname}_shared PUBLIC ${MBEDTLS_LIBRARY_DIRS})
     target_link_libraries(${Libname}_shared PUBLIC ${MBEDTLS_LINK_LIBRARIES})
   endif()
+endif()
+
+if(Z_FEATURE_LINK_QUIC)
+  set(BUILD_SHARED_LIBS OFF CACHE BOOL "Disable shared wolfSSL" FORCE)
+  add_subdirectory(external/wolfssl)
+
+  set(ENABLE_WOLFSSL ON CACHE BOOL "Enable wolfSSL backend for ngtcp2" FORCE)
+  set(ENABLE_SHARED_LIB OFF CACHE BOOL "Disable shared ngtcp2" FORCE)
+  set(ENABLE_STATIC_LIB ON CACHE BOOL "Enable static ngtcp2" FORCE)
+  add_subdirectory(external/ngtcp2)
 endif()
 
 file(GLOB_RECURSE Sources
@@ -603,6 +614,12 @@ list(REMOVE_DUPLICATES _zp_platform_link_libraries)
 foreach(_zp_platform_link_library IN LISTS _zp_platform_link_libraries)
   pico_target_link_library("${_zp_platform_link_library}")
 endforeach()
+
+if(Z_FEATURE_LINK_QUIC)
+  pico_target_link_library(ngtcp2)
+  pico_target_link_library(ngtcp2_crypto_wolfssl)
+  pico_target_link_library(wolfssl)
+endif()
 
 if(CHECK_THREADS)
   pico_target_link_library(Threads::Threads)

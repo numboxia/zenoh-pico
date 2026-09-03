@@ -36,6 +36,11 @@ z_result_t _z_new_link_udp_unicast(_z_link_t *zl, _z_endpoint_t ep);
 z_result_t _z_endpoint_udp_multicast_valid(_z_endpoint_t *ep);
 z_result_t _z_new_link_udp_multicast(_z_link_t *zl, _z_endpoint_t ep);
 #endif
+#if Z_FEATURE_LINK_QUIC == 1
+z_result_t _z_endpoint_quic_valid(_z_endpoint_t *ep);
+z_result_t _z_new_peer_quic(_z_endpoint_t *endpoint, _z_sys_net_socket_t *socket);
+z_result_t _z_new_link_quic(_z_link_t *zl, _z_endpoint_t ep);
+#endif
 #if Z_FEATURE_LINK_BLUETOOTH == 1
 z_result_t _z_endpoint_bt_valid(_z_endpoint_t *ep);
 z_result_t _z_new_link_bt(_z_link_t *zl, _z_endpoint_t ep);
