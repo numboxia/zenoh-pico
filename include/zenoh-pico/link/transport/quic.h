@@ -6,6 +6,7 @@
 
 #include "zenoh-pico/collections/string.h"
 #include "zenoh-pico/system/platform.h"
+#include "zenoh-pico/system/platform/freertos/ti_am67a.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -24,14 +25,14 @@ z_result_t _z_quic_endpoint_init_from_address(_z_sys_net_endpoint_t *ep, const _
 
 // flawfinder: ignore
 z_result_t _z_quic_open(_z_sys_net_socket_t *sock, const _z_sys_net_endpoint_t endpoint, uint32_t tout);
-z_result_t _z_quic_listen(_z_sys_net_socket_t *sock, const _z_sys_net_endpoint_t endpoint);
+z_result_t _z_quic_listen(_z_sys_net_socket_t *sock, const _z_sys_net_endpoint_t endpoint, uint32_t tout);
 z_result_t _z_quic_accept(const _z_sys_net_socket_t *sock_in, _z_sys_net_socket_t *sock_out);
 void _z_quic_close(_z_sys_net_socket_t *sock);
 
 // flawfinder: ignore
 size_t _z_quic_read(_z_sys_net_socket_t sock, uint8_t *ptr, size_t len);
 size_t _z_quic_read_exact(_z_sys_net_socket_t sock, uint8_t *ptr, size_t len);
-size_t _z_quic_write(_z_sys_net_socket_t sock, const uint8_t *ptr, size_t len);
+size_t _z_quic_write(_z_sys_net_socket_t sock, const uint8_t *ptr, size_t len, _z_sys_net_endpoint_t endpoint);
 
 #ifdef __cplusplus
 }

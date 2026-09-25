@@ -108,7 +108,7 @@ static size_t _z_quic_lwip_read_exact(_z_sys_net_socket_t sock, uint8_t *ptr, si
 }
 
 static size_t _z_quic_lwip_write(_z_sys_net_socket_t sock, const uint8_t *ptr, size_t len,
-                                const _z_sys_net_endpoint_t endpoint) {
+                                 const _z_sys_net_endpoint_t endpoint) {
     return (size_t)sendto(_z_lwip_socket_get(sock), ptr, len, 0, endpoint._iptcp->ai_addr, endpoint._iptcp->ai_addrlen);
 }
 
@@ -128,16 +128,13 @@ z_result_t _z_quic_listen(_z_sys_net_socket_t *sock, const _z_sys_net_endpoint_t
 
 void _z_quic_close(_z_sys_net_socket_t *sock) { _z_quic_lwip_close(sock); }
 
-size_t _z_quic_read(_z_sys_net_socket_t sock, uint8_t *ptr, size_t len) {
-    return _z_quic_lwip_read(sock, ptr, len);
-}
+size_t _z_quic_read(_z_sys_net_socket_t sock, uint8_t *ptr, size_t len) { return _z_quic_lwip_read(sock, ptr, len); }
 
 size_t _z_quic_read_exact(_z_sys_net_socket_t sock, uint8_t *ptr, size_t len) {
     return _z_quic_lwip_read_exact(sock, ptr, len);
 }
 
-size_t _z_quic_write(_z_sys_net_socket_t sock, const uint8_t *ptr, size_t len,
-                            const _z_sys_net_endpoint_t endpoint) {
+size_t _z_quic_write(_z_sys_net_socket_t sock, const uint8_t *ptr, size_t len, const _z_sys_net_endpoint_t endpoint) {
     return _z_quic_lwip_write(sock, ptr, len, endpoint);
 }
 

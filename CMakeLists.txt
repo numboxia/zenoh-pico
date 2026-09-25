@@ -474,7 +474,7 @@ if(PICO_SHARED)
 endif()
 
 # TLS support via Mbed TLS
-if(Z_FEATURE_LINK_TLS OR Z_FEATURE_LINK_QUIC)
+if(Z_FEATURE_LINK_TLS)
   find_package(PkgConfig REQUIRED)
 
   # Prefer Mbed TLS 3.x, fall back to 2.x
@@ -540,9 +540,15 @@ if(Z_FEATURE_LINK_QUIC)
   set(BUILD_SHARED_LIBS OFF CACHE BOOL "Disable shared wolfSSL" FORCE)
   add_subdirectory(external/wolfssl)
 
+  set(WOLFSSL_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/wolfssl" CACHE PATH "Local wolfSSL includes" FORCE)
+  set(WOLFSSL_LIBRARY "wolfssl" CACHE STRING "Local wolfSSL target" FORCE)
+
   set(ENABLE_WOLFSSL ON CACHE BOOL "Enable wolfSSL backend for ngtcp2" FORCE)
+  set(ENABLE_OPENSSL OFF CACHE BOOL "Disable OpenSSL backend for ngtcp2" FORCE)
   set(ENABLE_SHARED_LIB OFF CACHE BOOL "Disable shared ngtcp2" FORCE)
   set(ENABLE_STATIC_LIB ON CACHE BOOL "Enable static ngtcp2" FORCE)
+  set(BUILD_TESTING OFF CACHE BOOL "Disable ngtcp2 tests" FORCE)
+
   add_subdirectory(external/ngtcp2)
 endif()
 
